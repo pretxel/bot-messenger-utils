@@ -1,0 +1,24 @@
+{
+  "name": "bot-messenger-utils",
+  "version": "0.0.9",
+  "description": "Utils for Messenger Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"test utils\""
+  },
+  "keywords": [
+    "messenger",
+    "utisl",
+    "bot",
+    "chatbot"
+  ],
+  "author": "Edsel Serrano",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.7.17",
+    "request": "^2.72.0",
+    "q": "~1.4.1",
+    "googlemaps": "^1.12.0",
+    "curlrequest": "^1.0.1"
+  }
+}
