@@ -1,6 +1,6 @@
 {
   "name": "bot-messenger-utils",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "description": "Utils for Messenger Bot",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,15 @@
   },
   "keywords": [
     "messenger",
-    "utisl",
+    "utils",
     "bot",
-    "chatbot"
+    "chatbot",
+    "facebook"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pretxel/bot-messenger-utils"
+  },
   "author": "Edsel Serrano",
   "license": "ISC",
   "dependencies": {

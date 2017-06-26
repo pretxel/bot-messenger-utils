@@ -59,10 +59,17 @@ function S3(opts){
   }
 
 
-  this.getImageBuffer = function(url, fileHash)
+  this.getBuffer = function(url, fileHash, type)
   {
     let deferred = Q.defer()
-    let filePath = path.join(dirname, "../tmp/", fileHash+'.jpg');
+    let extension = "";
+    if (type === "video"){
+      extension = "mp4";
+    }else{
+      extension = "jpg";
+    }
+
+    let filePath = path.join(dirname, "../tmp/", fileHash+'.' + extension);
 
     request(url).pipe(fs.createWriteStream(filePath)).on('close', function(){
 
@@ -79,12 +86,18 @@ function S3(opts){
     return deferred.promise
   }
 
-  this.upload = function (url, folder, fileHash , bucket) {
+  this.upload = function (url, folder, fileHash , type , bucket) {
     let deferred = Q.defer()
-    if (typeof url  == 'string')
+    if (typeof url  == 'string' && typeof type  == 'string' )
     {
-      this.getImageBuffer(url, fileHash).then(data => {
-        let fileName = (folder != '') ?  folder + '/' + fileHash+'.jpg' :  fileHash+'.jpg';
+      let extension = "";
+      if (type === "video"){
+        extension = "mp4";
+      }else{
+        extension = "jpg";
+      }
+      this.getBuffer(url, fileHash, type).then(data => {
+        let fileName = (folder != '') ?  folder + '/' + fileHash+'.' + extension :  fileHash+'.' + extension;
         this.putObject(bucket, fileName, data).then(resp => {
           deferred.resolve(resp);
         });
