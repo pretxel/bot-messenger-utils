@@ -1,6 +1,7 @@
 'use strict';
 
 var request = require('request');
+var Q = require ('q');
 
 var DEFAULT_URL = "https://graph.facebook.com/";
 var DEFAULT_SUFFIX = "messenger_bot_";
@@ -15,13 +16,15 @@ function Analytics(opts) {
     }
 
     var _config = this.config = Object.freeze(validate(opts)),
-        accessToken = _config.accessToken,
+        pageAccessToken = _config.pageAccessToken,
         appId = _config.appId,
+        pageId = _config.pageId,
         logRepository = _config.logRepository,
         suffix = _config.suffix,
         withURL = _config.withURL;
 
     this.logEvent = function (senderId, eventName, eventValue) {
+        var deferred = Q.defer()
         var eventNameFull = suffix + eventName;
         var date = new Date();
 
@@ -30,7 +33,7 @@ function Analytics(opts) {
             advertiser_tracking_enabled: 1,
             application_tracking_enabled: 1,
             extinfo: JSON.stringify(['mb1']),
-            page_id: appId,
+            page_id: pageId,
             page_scoped_user_id: senderId,
             custom_events: JSON.stringify([{
                 _eventName: eventNameFull,
@@ -42,27 +45,32 @@ function Analytics(opts) {
         }
 
         request.post({
-            url: withURL + appId + "/activities?access_token=" + accessToken,
+            url: withURL + appId + "/activities?access_token=" + pageAccessToken,
             form: log_event
         }, function (err, httpResponse, body) {
-            if (err != null) {
-                //winston.log('error', err);
+            if (!err) {
+                var resp = {
+                    txt: "Send event: " + eventName + " senderID: " + senderId,
+                    obj: body
+                };
+                deferred.resolve(resp);
             } else {
-                //winston.log('debug','Send event: ' + event_name + ' senderID: ' + senderID);
+                deferred.reject(err);
             }
-
         });
 
         if (logRepository != "") {
             logRepository.saveActivity(eventName, eventValue, senderId);
         }
 
+        return deferred.promise
+
     }
 
 }
 
 var validate = function validate(opts) {
-    if (!opts.appId || !opts.accessToken) {
+    if (!opts.appId || !opts.pageAccessToken || !opts.pageId) {
         throw new Error('Could not find access token or app ID');
     }
 
