@@ -30,17 +30,15 @@ function Analytics(opts) {
 
         var log_event = {
             event: 'CUSTOM_APP_EVENTS',
-            advertiser_tracking_enabled: 1,
-            application_tracking_enabled: 1,
+            advertiser_tracking_enabled: 0,
+            application_tracking_enabled: 0,
             extinfo: JSON.stringify(['mb1']),
             page_id: pageId,
             page_scoped_user_id: senderId,
             custom_events: JSON.stringify([{
                 _eventName: eventNameFull,
-                _value: 1,
-                fb_success: 1,
-                _logTime: date.getTime(),
-                fb_description: eventValue
+                _valueToSum: 1,
+                _logTime: date.getTime()
       }])
         }
 
