@@ -29,28 +29,32 @@ function Analytics(opts) {
         var eventNameFull = suffix + eventName;
         var date = new Date();
 
-        var log_event = {
+        var custom_events = [{
+            _eventName: eventNameFull,
+            _valueToSum: "1",
+            _value: "1",
+            _logTime: date.getTime(),
+            fb_success: "1",
+            fb_description: eventValue
+        }];
+
+        var event = {
             access_token: pageAccessToken,
-            event: 'CUSTOM_APP_EVENTS',
-            advertiser_tracking_enabled: 0,
-            application_tracking_enabled: 0,
-            extinfo: JSON.stringify(['mb1']),
+            event: "CUSTOM_APP_EVENTS",
+            custom_events: JSON.stringify(custom_events),
+            advertiser_tracking_enabled: "0",
+            application_tracking_enabled: "0",
+            extinfo: "[\"mb1\"]",
             page_id: pageId,
-            page_scoped_user_id: senderId,
-            custom_events: JSON.stringify([{
-                _eventName: eventNameFull,
-                _valueToSum: 1,
-                _logTime: date.getTime(),
-                _value: 1,
-                fb_success: 1,
-                fb_description: eventValue
-      }])
-        }
+            page_scoped_user_id: senderId
+        };
+
+
         FB.setAccessToken(pageAccessToken);
         FB.api(
-            '/' + appId + '/activities?access_token=' + pageAccessToken,
+            '/' + appId + '/activities',
             'POST',
-            log_event,
+            event,
             function (response) {
                 var resp = {
                     txt: "Send event: " + eventName + " senderID: " + senderId,
