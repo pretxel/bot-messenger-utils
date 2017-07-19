@@ -36,11 +36,14 @@ function Analytics(opts) {
             application_tracking_enabled: 0,
             extinfo: JSON.stringify(['mb1']),
             page_id: pageId,
-            page_scoped_user_id: pageId,
+            page_scoped_user_id: senderId,
             custom_events: JSON.stringify([{
                 _eventName: eventNameFull,
                 _valueToSum: 1,
-                _logTime: date.getTime()
+                _logTime: date.getTime(),
+                _value: 1,
+                fb_success: 1,
+                fb_description: eventValue
       }])
         }
         FB.setAccessToken(pageAccessToken);
