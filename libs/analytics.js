@@ -45,7 +45,7 @@ function Analytics(opts) {
         }
         FB.setAccessToken(pageAccessToken);
         FB.api(
-            '/' + appId + '/activities',
+            '/' + appId + '/activities?access_token=' + pageAccessToken,
             'POST',
             log_event,
             function (response) {
