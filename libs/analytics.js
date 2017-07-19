@@ -43,7 +43,7 @@ function Analytics(opts) {
                 _logTime: date.getTime()
       }])
         }
-
+        FB.setAccessToken(pageAccessToken);
         FB.api(
             '/' + appId + '/activities',
             'POST',
