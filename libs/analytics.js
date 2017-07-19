@@ -51,7 +51,7 @@ function Analytics(opts) {
             function (response) {
                 var resp = {
                     txt: "Send event: " + eventName + " senderID: " + senderId,
-                    obj: body
+                    obj: response
                 };
                 deferred.resolve(resp);
             }
