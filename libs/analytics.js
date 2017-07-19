@@ -29,12 +29,13 @@ function Analytics(opts) {
         var date = new Date();
 
         var log_event = {
+            access_token: pageAccessToken,
             event: 'CUSTOM_APP_EVENTS',
             advertiser_tracking_enabled: 0,
             application_tracking_enabled: 0,
             extinfo: JSON.stringify(['mb1']),
             page_id: pageId,
-            page_scoped_user_id: senderId,
+            page_scoped_user_id: pageId,
             custom_events: JSON.stringify([{
                 _eventName: eventNameFull,
                 _valueToSum: 1,

@@ -1,6 +1,6 @@
 {
   "name": "bot-messenger-utils",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Utils for Messenger Bot",
   "main": "index.js",
   "scripts": {
