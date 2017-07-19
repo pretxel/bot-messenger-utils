@@ -2,6 +2,7 @@
 
 var request = require('request');
 var Q = require ('q');
+var FB = require('fb');
 
 var DEFAULT_URL = "https://graph.facebook.com/";
 var DEFAULT_SUFFIX = "messenger_bot_";
@@ -43,20 +44,18 @@ function Analytics(opts) {
       }])
         }
 
-        request.post({
-            url: withURL + appId + "/activities?access_token=" + pageAccessToken,
-            form: log_event
-        }, function (err, httpResponse, body) {
-            if (!err) {
+        FB.api(
+            '/' + appId + '/activities',
+            'POST',
+            log_event,
+            function (response) {
                 var resp = {
                     txt: "Send event: " + eventName + " senderID: " + senderId,
                     obj: body
                 };
                 deferred.resolve(resp);
-            } else {
-                deferred.reject(err);
             }
-        });
+        );
 
         if (logRepository != "") {
             logRepository.saveActivity(eventName, eventValue, senderId);
