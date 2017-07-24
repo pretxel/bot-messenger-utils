@@ -69,7 +69,8 @@ function S3(opts){
       extension = "jpg";
     }
 
-    let filePath = path.join(dirname, "../tmp/", fileHash+'.' + extension);
+    //let filePath = path.join(dirname, "../tmp/", fileHash+'.' + extension);
+    let filePath = "/tmp/" + fileHash +'.' + extension;
 
     request(url).pipe(fs.createWriteStream(filePath)).on('close', function(){
 
