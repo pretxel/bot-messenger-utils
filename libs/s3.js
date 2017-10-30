@@ -31,13 +31,17 @@ function S3(opts){
     region: region
   });
 
-  this.putObject = function(bucket, key , data){
+
+
+
+  this.putObject = function(bucket, key , data, contentType){
     let deferred = Q.defer()
 
     let params = {
       Bucket: bucket,
       Key: key,
-      Body: data
+      Body: data,
+      ContentType: contentType
     }
 
     s3AWS.putObject(params, function (err, data) {
@@ -92,14 +96,17 @@ function S3(opts){
     if (typeof url  == 'string' && typeof type  == 'string' )
     {
       let extension = "";
+      let contentType = "";
       if (type === "video"){
         extension = "mp4";
+        contentType = "video/mp4"; 
       }else{
         extension = "jpg";
+        contentType = "image/jpeg";
       }
       this.getBuffer(url, fileHash, type).then(data => {
         let fileName = (folder != '') ?  folder + '/' + fileHash+'.' + extension :  fileHash+'.' + extension;
-        this.putObject(bucket, fileName, data).then(resp => {
+        this.putObject(bucket, fileName, data, contentType).then(resp => {
           deferred.resolve(resp);
         });
       });
@@ -107,9 +114,7 @@ function S3(opts){
     return deferred.promise
   }
 
-
 }
-
 
 
 var validate = function validate(opts) {
